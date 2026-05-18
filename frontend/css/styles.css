@@ -322,6 +322,19 @@ body {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Logout sits on the dark blue header — default outline uses dark text and disappears */
+.dashboard-header .btn-outline {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.dashboard-header .btn-outline:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .dashboard-main {
