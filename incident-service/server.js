@@ -58,7 +58,7 @@ async function startServer() {
     console.log("Incident service: Connected to MongoDB Atlas");
 
     app.listen(PORT, () => {
-      console.log(`Incident service running at http://localhost:${PORT}`);
+      console.log(`Incident service running on port ${PORT}`);
       console.log(`Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {

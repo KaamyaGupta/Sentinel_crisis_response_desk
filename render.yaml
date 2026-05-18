@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: disaster-auth-service
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd auth-service && npm install
+    startCommand: cd auth-service && npm start
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: https://disaster-frontend.onrender.com
+
+  - type: web
+    name: disaster-incident-service
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd incident-service && npm install
+    startCommand: cd incident-service && npm start
+    envVars:
+      - key: PORT
+        value: 3002
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: https://disaster-frontend.onrender.com
+
+  - type: web
+    name: disaster-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install 2>/dev/null || echo "No npm deps needed"
+    startCommand: cd frontend && node server.js
+    envVars:
+      - key: PORT
+        value: 5500
+      - key: REACT_APP_AUTH_API
+        value: https://disaster-auth-service.onrender.com/api/auth
+      - key: REACT_APP_INCIDENT_API
+        value: https://disaster-incident-service.onrender.com/api/incidents

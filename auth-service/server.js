@@ -66,7 +66,7 @@ async function startServer() {
     console.log("Auth service: Connected to MongoDB Atlas");
 
     app.listen(PORT, () => {
-      console.log(`Auth service running at http://localhost:${PORT}`);
+      console.log(`Auth service running on port ${PORT}`);
       console.log(`Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {

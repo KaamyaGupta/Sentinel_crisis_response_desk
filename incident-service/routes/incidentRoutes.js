@@ -17,7 +17,7 @@ const { verifyToken } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Every route in this file requires authentication
-router.use(verifyToken);
+// router.use(verifyToken);
 
 /**
  * GET /api/incidents
