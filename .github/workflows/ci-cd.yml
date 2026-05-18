@@ -1,0 +1,65 @@
+# GitHub Actions CI/CD Workflow (THEORETICAL / educational)
+# --------------------------------------------------------
+# Runs on push/PR to main. Installs dependencies, runs basic checks.
+# Extend with Docker push and K8s deploy in real production.
+
+name: Disaster Management CI/CD
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # Job 1: Verify backend services install correctly
+  test-auth-service:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: auth-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: auth-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify server file exists
+        run: test -f server.js
+
+  test-incident-service:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: incident-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: incident-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify server file exists
+        run: test -f server.js
+
+  # Job 2: Example build step (Docker - commented for local-only project)
+  # docker-build:
+  #   needs: [test-auth-service, test-incident-service]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Build auth image
+  #       run: docker build -f docker/Dockerfile.auth -t disaster-auth ./auth-service

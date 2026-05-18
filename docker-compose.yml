@@ -1,0 +1,46 @@
+# docker-compose.yml (THEORETICAL - for learning / viva explanation)
+# -------------------------------------------------------------------
+# This file describes how multiple containers work together.
+# You do NOT need Docker to run this project locally.
+#
+# Concept: docker-compose up would start auth, incident, and frontend
+# on a shared network, with environment variables injected.
+
+version: "3.8"
+
+services:
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: docker/Dockerfile.auth
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=http://localhost:5500
+    restart: unless-stopped
+
+  incident-service:
+    build:
+      context: ./incident-service
+      dockerfile: docker/Dockerfile.incident
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=http://localhost:5500
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "5500:80"
+    depends_on:
+      - auth-service
+      - incident-service

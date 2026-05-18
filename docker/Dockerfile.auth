@@ -1,0 +1,20 @@
+# Dockerfile for Auth Microservice (THEORETICAL - not required to run locally)
+# ---------------------------------------------------------------------------
+# This file shows how you WOULD containerize the auth service for production.
+# Build: docker build -f docker/Dockerfile.auth -t disaster-auth ./auth-service
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files first (better layer caching)
+COPY package*.json ./
+RUN npm install --production
+
+# Copy application source
+COPY . .
+
+EXPOSE 3001
+
+# Health check optional in orchestration
+CMD ["node", "server.js"]

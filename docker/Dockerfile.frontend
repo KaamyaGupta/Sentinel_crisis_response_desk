@@ -1,0 +1,15 @@
+# Dockerfile for Frontend (THEORETICAL)
+# ------------------------------------
+# Serves static HTML/CSS/JS using nginx in production scenarios.
+# Build context should be the frontend folder.
+
+FROM nginx:alpine
+
+# Copy static files into nginx default directory
+COPY index.html /usr/share/nginx/html/
+COPY css/ /usr/share/nginx/html/css/
+COPY js/ /usr/share/nginx/html/js/
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
