@@ -78,20 +78,119 @@
       </div>
     </header>
 
-    <main class="dashboard-main">
-      <div class="stats-bar">
-        <div class="stat-card">
-          <span class="stat-label">System</span>
-          <span class="stat-value">Live</span>
+    <main class="dashboard-main fade-in-section">
+      <!-- Command Center header with live clock -->
+      <section class="command-center" aria-label="Operations command center">
+        <div class="command-center-main">
+          <p class="command-eyebrow">Operations Command</p>
+          <h2 class="command-title">Disaster Operations Command Dashboard</h2>
+          <p class="command-subtitle">Monitor and coordinate emergency response activities.</p>
+          <p class="command-user">
+            Operator: <strong id="welcome-user-name">Coordinator</strong>
+            <span id="welcome-user-email" class="command-user-email"></span>
+          </p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Role</span>
-          <span class="stat-value">Coordinator</span>
+        <div class="command-clock" aria-live="polite">
+          <span class="command-clock-label">Live System Time</span>
+          <time id="command-date" class="command-date">—</time>
+          <time id="command-time" class="command-time">—</time>
         </div>
-      </div>
+      </section>
 
-      <h2 class="section-title">Active Incidents</h2>
-      <div id="incidents-grid" class="incidents-grid"></div>
+      <!-- Operations overview stat cards -->
+      <section class="dashboard-stats operations-overview fade-in-section" id="dashboard-stats" aria-label="Operations overview">
+        <article class="metric-card">
+          <span class="metric-icon" aria-hidden="true">📊</span>
+          <div class="metric-body">
+            <span class="metric-label">Total Incidents</span>
+            <span class="metric-value" id="stat-total">0</span>
+          </div>
+        </article>
+        <article class="metric-card metric-card-active">
+          <span class="metric-icon" aria-hidden="true">🔔</span>
+          <div class="metric-body">
+            <span class="metric-label">Active Emergencies</span>
+            <span class="metric-value" id="stat-active-emergencies">0</span>
+          </div>
+        </article>
+        <article class="metric-card metric-card-accent">
+          <span class="metric-icon" aria-hidden="true">⚠️</span>
+          <div class="metric-body">
+            <span class="metric-label">High Severity Alerts</span>
+            <span class="metric-value" id="stat-high-alerts">0</span>
+          </div>
+        </article>
+        <article class="metric-card metric-card-success">
+          <span class="metric-icon" aria-hidden="true">✅</span>
+          <div class="metric-body">
+            <span class="metric-label">Resolved Cases</span>
+            <span class="metric-value" id="stat-resolved">0</span>
+          </div>
+        </article>
+        <article class="metric-card metric-card-efficiency">
+          <span class="metric-icon" aria-hidden="true">📈</span>
+          <div class="metric-body">
+            <span class="metric-label">Response Efficiency</span>
+            <span class="metric-value" id="stat-efficiency">0%</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="quick-actions fade-in-section" aria-label="Quick actions">
+        <button type="button" class="quick-action-card" id="qa-report"><span class="qa-icon" aria-hidden="true">➕</span><span class="qa-label">Report New Incident</span></button>
+        <button type="button" class="quick-action-card" id="qa-alerts"><span class="qa-icon" aria-hidden="true">🚨</span><span class="qa-label">View Active Alerts</span></button>
+        <button type="button" class="quick-action-card" id="qa-refresh"><span class="qa-icon" aria-hidden="true">🔄</span><span class="qa-label">Refresh Dashboard</span></button>
+        <button type="button" class="quick-action-card" id="qa-resolved"><span class="qa-icon" aria-hidden="true">✅</span><span class="qa-label">View Resolved Cases</span></button>
+      </section>
+
+      <section class="analytics-insights fade-in-section" aria-label="Dashboard insights">
+        <div class="insight-card"><span class="insight-label">Most Common Severity</span><span class="insight-value" id="insight-severity">—</span></div>
+        <div class="insight-card"><span class="insight-label">Active Cases</span><span class="insight-value" id="insight-active">0</span></div>
+        <div class="insight-card"><span class="insight-label">Resolution Rate</span><span class="insight-value" id="insight-resolution">0%</span></div>
+      </section>
+
+      <div class="dashboard-layout">
+        <div class="dashboard-primary">
+          <div class="filters-toolbar fade-in-section">
+            <div class="search-wrap">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input type="search" id="incident-search" class="search-input" placeholder="Search incidents..." aria-label="Search incidents" />
+            </div>
+            <select id="filter-severity" class="filter-select" aria-label="Filter by severity">
+              <option value="all">All Severities</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+            <select id="filter-status" class="filter-select" aria-label="Filter by status">
+              <option value="all">All Statuses</option>
+              <option value="active">Active Only</option>
+              <option value="reported">Reported</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+              <option value="closed">Closed</option>
+            </select>
+            <select id="sort-incidents" class="filter-select" aria-label="Sort incidents">
+              <option value="severity">Highest Severity First</option>
+              <option value="newest">Newest First</option>
+            </select>
+          </div>
+          <div class="section-header">
+            <h2 class="section-title">Incident Priority Board</h2>
+            <p class="section-subtitle" id="incidents-count-label">Loading incidents...</p>
+          </div>
+          <div id="incidents-grid" class="incidents-grid"></div>
+        </div>
+
+        <aside class="activity-panel timeline-panel" aria-label="Recent activity timeline">
+          <div class="activity-panel-header">
+            <h3 class="activity-title">Recent Activity Timeline</h3>
+            <span class="activity-badge">Live</span>
+          </div>
+          <ul id="timeline-list" class="timeline-list"></ul>
+        </aside>
+      </div>
     </main>
   </section>
 
@@ -128,9 +227,13 @@
     </div>
   </div>
 
-  <!-- Load scripts in order: config → api helpers → app logic -->
+  <!-- Toast notifications container -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Load scripts: config → api → dashboard helpers → app logic -->
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
